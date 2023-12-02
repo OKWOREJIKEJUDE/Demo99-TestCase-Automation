@@ -9,6 +9,7 @@ class Login
     }
     getLogin(){
         cy.get("input[value='LOGIN']").click()
+        
     }
 }
 export default Login;

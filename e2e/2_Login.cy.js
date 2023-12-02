@@ -2,7 +2,7 @@
 import Login from "../PagerObjectFolder/Login_POM.cy"
 
 describe("User Login", ()=>{
-    it.skip("Validate logging into the application with valid credentials (ie valid userID and valid password)", ()=>{
+    it("Validate logging into the application with valid credentials (ie valid userID and valid password)", ()=>{
         cy.visit("https://demo.guru99.com/v4/")
         const myLoginDetails = new Login();
         myLoginDetails.getUsername();
@@ -11,11 +11,11 @@ describe("User Login", ()=>{
         cy.get("marquee[class='heading3']").should("contain", "Welcome To Manager's Page of Guru99 Bank")
     })
 
-    it.skip("Validate logging into the application with invalid credentials(ie invalid userID and invalid password)", ()=>{
+    it("Validate logging into the application with invalid credentials(ie invalid userID and invalid password)", ()=>{
         cy.visit("https://demo.guru99.com/v4/")
         cy.get("input[name='uid']").type("hhsnj3729335345443")
         cy.get("input[name='password']").type("46438457hjsdhdddm")
-        cy.get("button[onclick='myFunction()']").click()
+        cy.get("input[value='LOGIN']").click()
         cy.on("window:alert", (t) => {
             expect(t).to.contains("User or Password is not valid")//verify the texts in the alert window..
         })
@@ -26,7 +26,7 @@ describe("User Login", ()=>{
         cy.visit("https://demo.guru99.com/v4/")
         cy.get("input[name='uid']").type("hhsnj3729335345443")
         cy.get("input[name='password']").type("ujepUbY")
-        cy.get("button[onclick='myFunction()']").click()
+        cy.get("input[value='LOGIN']").click()
         cy.on("window:alert", (t) => {
             expect(t).to.contains("User or Password is not valid")//verify the texts in the alert window..
         })
@@ -36,7 +36,7 @@ describe("User Login", ()=>{
         cy.visit("https://demo.guru99.com/v4/")
         cy.get("input[name='uid']").type("mngr541404")
         cy.get("input[name='password']").type("eyjrif85938442")
-        cy.get("button[onclick='myFunction()']").click()
+        cy.get("input[value='LOGIN']").click()
         cy.on("window:alert", (t) => {
             expect(t).to.contains("User or Password is not valid")//verify the texts in the alert window..
         })
@@ -44,7 +44,7 @@ describe("User Login", ()=>{
 
     it("Validate logging into the application without providing any credentials", ()=>{
         cy.visit("https://demo.guru99.com/v4/")
-        cy.get("button[onclick='myFunction()']").click()
+        cy.get("input[value='LOGIN']").click()
         cy.on("window:alert", (t) => {
             expect(t).to.contains("User or Password is not valid")//verify the texts in the alert window..
         })
@@ -79,13 +79,62 @@ describe("User Login", ()=>{
         cy.go("back")
     })
 
-    it.only("Validate the text into the Password field is toggled to hide its visibility", ()=>{
+    //todo........INCOMPLETE
+    it("Validate the text into the Password field is toggled to hide its visibility", ()=>{
         cy.visit("https://demo.guru99.com/v4/")
         const togglePassword = new Login();
         togglePassword.getUsername();
         togglePassword.getPassword()
         cy.get("input[name='password']").should("not.be.visible")
     })
+
+    //todo...This test failed by logging back in when its not supposed to because you have logged out already
+    it("Validate Loggingout from the Application and browsing back using Browser back button", ()=>{
+        cy.visit("https://demo.guru99.com/v4/")
+        const myLoggingIn = new Login();
+        myLoggingIn.getUsername();
+        myLoggingIn.getPassword()
+        myLoggingIn.getLogin()
+        cy.get("marquee[class='heading3']").should("contain", "Welcome To Manager's Page of Guru99 Bank")
+        cy.get("a[href='Logout.php']").click()
+        cy.go("back")
+
+    })
+
+    it("Validate the number of unsucessful login attemps ", ()=>{
+        for (let x = 0; x < 10; x++) {
+        cy.visit("https://demo.guru99.com/v4/")
+        cy.get("input[name='uid']").type("hhsnj3729335345443")
+        cy.get("input[name='password']").type("46438457hjsdhdddm")
+        cy.get("input[value='LOGIN']").click()   
+        }
+    })
+
+    it("Validate Logging into the Application, closing the Browser without loggingout and opening the application in the Browser again", ()=>{
+
+
+    })
+
+    //Try navigating to other pages from login to see if its possible
+    it.only("Validate user is able to navigate to different pages from Login page", ()=>{
+        cy.visit("https://demo.guru99.com/v4/")
+        cy.get("img[src='https://demo.guru99.com/images/java-logo.png']").click()
+        cy.go("back")
+        cy.get("img[src='https://demo.guru99.com/images/live-project-logo.png']").click()
+        cy.go("back")
+        cy.get("img[src='https://demo.guru99.com/images/selenium-logo.jpg']").click()
+        cy.go("back")
+    })
+
+    it("Validate that old and new passwords are changed after 20 days as expected thewebsite should behave", ()=>{
+       //todo.. Login using the old password after 20 days to verify this
+
+
+    })
+
+
+
+
 
           
           
